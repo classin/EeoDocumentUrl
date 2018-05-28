@@ -1,0 +1,81 @@
+body {
+  font-family: "微软雅黑";
+}
+div {
+  box-sizing: border-box;
+}
+.classroomWindow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+.classroomWindow .desktop {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 200px;
+  bottom: 0;
+  border-right: 1px solid #ccc;
+}
+.classroomWindow .desktop .widgetTabList {
+  height: 40px;
+  padding-left: 4px;
+  padding-top: 4px;
+  border-bottom: 1px solid #ccc;
+  white-space: nowrap;
+  overflow: auto;
+}
+.classroomWindow .desktop .widgetTabList .tabBtn {
+  display: inline-block;
+  padding: 4px;
+  margin-right: 10px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.classroomWindow .desktop .widgetTabList .tabBtn .closeBtn {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 12px;
+}
+.classroomWindow .desktop .widgetTabList .tabBtn .closeBtn:before {
+  content: "×";
+}
+.classroomWindow .desktop .widgetTabList .tabBtn.checked {
+  background-color: #fff;
+}
+.classroomWindow .desktop .widgetWindow {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 40px;
+  bottom: 0;
+}
+.classroomWindow .desktop .widgetWindow iframe {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border: 0;
+}
+.classroomWindow .cloudDisk {
+  position: absolute;
+  width: 200px;
+  height: 100%;
+  right: 0;
+  top: 0;
+}
+.classroomWindow .cloudDisk .file {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  font-size: 12px;
+}
