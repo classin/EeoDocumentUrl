@@ -1,0 +1,9 @@
+{
+    "url":"http://10.0.1.84:3000/index_exam.html?pa=v1",
+    "uid":true,
+    "nickname":true,
+    "identity":true,
+    "title":"exam",
+    "size":"800x500,400x300",
+    "classin_authority":false
+}

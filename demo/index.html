@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Socket.io - Simple chat</title>
+<!-- <link rel="stylesheet" type="text/css" href="css/style.css"/> -->
+<link rel="stylesheet/less" type="text/css" href="less/style_exam.less" />
+<script src="js/less.min.js"></script>
+<script src="js/moment.js"></script>
+<script src="socket.io/socket.io.js"></script>
+<script src="js/vue.js"></script>
+<!--<script src="javascripts/chat.js"></script>-->
+</head>
+<body>
+<div id="app" class="appWrapper">
+	<div v-if="!inRoom" class="examLoginBox">
+		<div>用户id: <input type="text" disabled v-model="userId" placeholder="用户id"></div>
+		<div>用户名: <input type="text" disabled v-model="userName" placeholder="用户名"></div>
+		<div>房间id: <input type="text" disabled v-model="roomId" placeholder="房间id"></div>
+		<div>身&nbsp;&nbsp;份: <select  disabled v-model="userRole">
+				<option value="1">老师</option>
+				<option value="2">学生</option>
+			</select> 试卷:<select disabled v-model="examId">
+					<option value="exam_1">exam_1</option>
+				</select></div>
+		<div style="text-align:right; padding-right:30px;"><input type="button" @click="login" :value="userRole==='1'?'开启考试':'进入考试'"></div>
+	</div>
+	<div v-else class="examRoom">
+		<div v-if="userRole==='1'" class="examPapper teacher">
+			<div v-if="exam">
+				<div class="examTitle">{{exam.examSource.examName}}
+					<span v-if="exam.examEnded===true">(已结束)</span>
+					<input v-else type="button" @click="clickExamStop" value="收卷">
+					<input type="button" @click="clickExamClose" value="关闭考试">
+				</div>
+				<div class="examWrapper">
+					<div v-for="(item,questionIndex) in exam.examSource.questionsList" class="questionBox">
+						<div v-if="item.type==='choice'">
+							<div class="questionTitle">{{item.title}}</div>
+							<div class="questionOptions">
+								<div v-for="(op,optionIndex) in item.options" class="option">
+									<span>{{op.context}}</span>
+									<span>{{op.isTrue===true?'√':'×'}}</span>
+									<span class="answerCheckedUsers">
+										<answerinfobox class="userBox" v-for="(qouid,qouidIndex) in questionOptionUser[questionIndex+'_'+optionIndex]" v-model="room.members[qouid]"></answerinfobox>
+									</span>
+								</div>
+							</div>
+							
+						</div>
+						<div v-if="item.type==='boolean'">
+							<div class="questionTitle">{{item.title}}</div>
+							<div>true</div>
+							<div>false</div>
+						</div>
+					</div>
+				</div>
+				<div class="membersBox">
+					<ul class="memebrsList">
+						<li v-for="memberData in room.members" v-if="memberData.userId!==userId" class="memberBox">
+							<div class="userInfo">{{memberData.userName}}({{memberData.inRoom?'在线':'离线'}}){{memberData.userId===userId?'[我]':''}}</div>
+							<div>
+								<!-- {{exam.usersAnswers[memberData.userId]}} -->
+								<div v-if="exam.usersAnswers[memberData.userId]" class="answersProgress">
+									<span>答题进度:</span>
+									<div v-for="(question,qIndex) in exam.examSource.questionsList" class="answer">
+										<span>{{qIndex+1}}:</span>
+										<span v-if="exam.usersAnswers[memberData.userId][qIndex]!==undefined && exam.usersAnswers[memberData.userId][qIndex]!==null">
+											选择了{{exam.usersAnswers[memberData.userId][qIndex]+1}}
+											({{exam.examSource.questionsList[qIndex].options[exam.usersAnswers[memberData.userId][qIndex]].isTrue===true?'√':'×'}})
+											<!-- {{exam.examSource.questionsList[qIndex][answer].isTrue===true?'√':'×'}} -->
+											<!-- {{exam.examSource.questionsList[qIndex][answer].isTrue===true?'√':'×'}} -->
+										</span>
+										<span v-else>未作答;</span>
+										<!-- {{qIndex+1}}:{{answer}} -->
+									</div>
+								</div>
+								<span v-else>答题进度:未开始</span>
+							</div>
+						</li>
+					</ul>
+						<!-- room.members:{{room.members}} -->
+				</div>
+			</div>
+			<div v-else><input type="button" @click="signOut" value="退出考场"></div>
+			<!-- exam:{{exam}} <br> -->
+			
+		</div>
+		<div v-if="userRole==='2'" class="examPapper student" :class="(exam.examEnded===true)?'examEnded':''">
+			<div v-if="exam">
+				<div class="examTitle">{{exam.examSource.examName}}
+					<span v-if="exam.examEnded===true">(已结束)</span>
+				</div>
+				<div v-for="(item,questionIndex) in exam.examSource.questionsList" class="questionBox">
+					<div v-if="item.type==='choice'">
+						<div class="questionTitle">{{questionIndex+1}}.{{item.title}}</div>
+						<ul class="questionOptions">
+							<li 
+								v-for="(op,optionIndex) in item.options" 
+								class="option"
+								:class="(exam.usersAnswers[userId] && (exam.usersAnswers[userId][questionIndex]!==undefined && exam.usersAnswers[userId][questionIndex]!==null) && exam.usersAnswers[userId][questionIndex]===optionIndex)?'checked':''"
+								@click="clickChoiceOption(questionIndex,optionIndex)">
+								<span>{{optionIndex}}.</span>
+								<span>{{op.context}}</span>
+								
+							</li>
+						</ul>
+					</div>
+					<div v-if="item.type==='boolean'">
+						<div class="questionTitle">{{item.title}}</div>
+						<div>true</div>
+						<div>false</div>
+					</div>
+				</div>
+			</div>
+			<div v-else>请等待开启考试。。。</div>
+			
+		</div>
+	</div>
+	<!-- exam:{{exam}} -->
+	<!-- room:{{room}} <br> -->
+	<!-- serverConnacted:{{serverConnacted}} -->
+</div>
+<script type="text/javascript">
+// Vue.components({
+
+// })
+
+var socketUrl='http://'+window.location.host;
+var socket = io.connect(socketUrl);
+
+
+
+var vueApp=new Vue({
+	el:'#app',
+	components:{
+		'answerinfobox':{
+			props:['value'],
+			created:function(){
+				console.log('aaaaaaa',this)
+			},
+			template:'<span>{{value.userName}};</span>'
+		},
+
+	},
+	data:{
+		inRoom:false,
+		serverConnacted:false,
+		roomId:'100001',
+
+		userId:'1000',
+		userName:'test1000',
+
+		userRole:'',
+
+		examId:'exam_1',
+		exam:'',
+
+		messageList:[],
+		inputMessage:'',
+		room:'',
+		socket:'',
+	},
+	created:function(){
+		var routeQuery=this.routeQuery();
+		// this.roomId=routeQuery.roomId || '';
+		// this.userId=routeQuery.userId || '';
+		// this.userRole=routeQuery.userRole || '';
+		// this.userName=routeQuery.userName || '';
+		this.roomId=(routeQuery.courseId+'_'+routeQuery.classId) || '';
+		this.userId=routeQuery.uid || '';
+		this.userName=decodeURIComponent(routeQuery.nickname) || '';
+		if(this.userName.length>8){
+			this.userName=this.userName.substr(0,8)+'...'
+		}
+		if(routeQuery.identity==='teacher'){
+			this.userRole='1';
+		}else{
+			this.userRole='2';
+		}
+	},
+	computed:{
+		onlineUsersList:function(){
+			var arr=[];
+			if(this.room && this.room.members){
+				for(var k in this.room.members){
+					var memebrData=this.room.members[k];
+					if(memebrData.inRoom){
+						arr.push(memebrData);
+					}
+				}
+			}
+			return arr;
+		},
+		messagesHistoryList:function(){
+			var arr=this.messageList.slice(0);
+			return arr.reverse();
+		},
+		questionOptionUser:function(){
+			var obj={};
+			if(this.exam){
+				for(var k in this.exam.usersAnswers){
+					var userId=k;
+					var answers=this.exam.usersAnswers[k]
+					answers.map(function(v,i){
+						var akeyName=i+'_'+v;
+						if(obj[akeyName]===undefined){
+							obj[akeyName]=[];
+						}
+						obj[akeyName].push(userId);
+					})
+				}
+			}
+			return obj;
+		},
+	},
+	methods: {
+		moment:moment,
+		login: function (event) {
+			if(!this.serverConnacted){
+				alert('服务器正在连接中...');
+				return false;
+			}
+			if(!this.userId){
+				alert('请输入用户id');
+				return false;
+			}
+			if(!this.userName){
+				alert('请输入用户姓名');
+				return false;
+			}
+			if(!this.roomId){
+				alert('请输入房间id');
+				return false;
+			}
+			socket.emit('join',JSON.stringify({
+				roomId:this.roomId,
+				userId:this.userId,
+				userName:this.userName
+			}))
+		},
+		loginSuccess:function(){
+			this.inRoom=true;
+			if(this.userRole==='1'){
+				this.examOpen();
+			}else{
+				this.examStatusRequest();
+			}
+		},
+		examOpen:function(){
+			socket.emit('examOpen',JSON.stringify({
+				examId:this.examId
+			}))
+		},
+		examOpenSuccess:function(jsonStr){
+			this.examStatusRequest();
+			if(jsonStr && JSON.parse(jsonStr).isContinue===true){
+				alert('上场考试尚未完成，现在继续当前考试')
+			}
+			
+		},
+		examStatusRequest:function(){
+			socket.emit('examStatus')
+		},
+		examStatusUpdate:function(jsonStr){
+			if(jsonStr){
+				var exam=JSON.parse(jsonStr);
+				this.exam=exam;
+			}else{
+				this.exam='';
+			}
+			if(this.exam==='' && this.userRole==='1'){
+				this.signOut();
+			}
+		},
+		clickExamStop:function(){
+			socket.emit('examStop')
+		},
+		clickExamClose:function(){
+			socket.emit('examClose')
+		},
+
+		clickChoiceOption:function(questionIndex,optionIndex){
+			if(this.exam.examEnded===true){
+				alert('已收卷，无法更改选项');
+				return false;
+			}
+			socket.emit('choiceOption',JSON.stringify({
+				questionIndex:questionIndex,
+				optionIndex:optionIndex
+			}))
+		},
+		messageSend:function(){
+			if(this.inputMessage!==''){
+				socket.emit('message',JSON.stringify({
+					content:this.inputMessage
+				}))
+			}
+		},
+		messageSendSuccess:function(jsonStr){
+			this.inputMessage='';
+		},
+		messageGet:function(jsonStr){
+			var msgData=JSON.parse(jsonStr);
+			this.messageList.push({
+				type:msgData.type,
+				userId:msgData.userId,
+				userName:msgData.userName,
+				serverTime:msgData.serverTime,
+				content:msgData.content
+			})
+			// this.$set(this.messageList,this.messageList.length,{
+			// 	type:msgData.userId,
+			// 	userId:msgData.userId,
+			// 	userName:msgData.userName,
+			// 	serverTime:msgData.serverTime,
+			// 	content:msgData.content
+			// })
+			// this.messageList.push({
+			// 	type:msgData.userId,
+			// 	userId:msgData.userId,
+			// 	userName:msgData.userName,
+			// 	serverTime:msgData.serverTime,
+			// 	content:msgData.content
+			// })
+			console.log('messageGet',jsonStr,this.messageList.length)
+		},
+		messagesReload:function(jsonStr){
+			var _this=this;
+			var msgsArr=JSON.parse(jsonStr);
+			msgsArr.map(function(v,i){
+				_this.messageList.push({
+					type:v.type,
+					userId:v.userId,
+					userName:v.userName,
+					serverTime:v.serverTime,
+					content:v.content
+				})
+			})
+		},
+		signOut:function(){
+			socket.emit('leave')
+		},
+		signOutSuccess:function(){
+			this.inRoom=false;
+		},
+		roomUpdate:function(jsonStr){
+			this.room=JSON.parse(jsonStr);
+		},
+		routeQuery:function(){
+			var data={};
+			var searchStr=window.location.search;
+			var arr=searchStr.substr(1).split('&');
+			arr.map(function(v,i){
+				var queryArr=v.split('=');
+				data[queryArr[0]]=queryArr[1] || '';
+			})
+			return data;
+		}
+	}
+})
+
+socket.on('open',function(){
+	vueApp.serverConnacted=true;
+	if(vueApp.userRole==='2'){
+		vueApp.login();
+	}
+	// 
+});
+socket.on('joinSuccess',function(){
+	vueApp.loginSuccess();
+});
+socket.on('examOpenSuccess',function(jsonStr){
+	vueApp.examOpenSuccess(jsonStr);
+});
+socket.on('examStatusUpdate',function(jsonStr){
+	vueApp.examStatusUpdate(jsonStr);
+});
+socket.on('leaveSuccess',function(){
+	vueApp.signOutSuccess();
+});
+socket.on('messageSendSuccess',function(jsonStr){
+	vueApp.messageSendSuccess(jsonStr);
+});
+socket.on('message',function(jsonStr){
+	vueApp.messageGet(jsonStr);
+});
+socket.on('messagesReload',function(jsonStr){
+	vueApp.messagesReload(jsonStr);
+});
+socket.on('roomUpdate',function(jsonStr){
+	vueApp.roomUpdate(jsonStr);
+});
+// function socketConnect (callback) {
+// 	var //socketUrl='http://localhost:3000';
+// 		socketUrl='http://10.0.0.50:3000';
+// 	var socket = io.connect(socketUrl);
+//     socket.on('open',function(statusText){
+//     	console.log('socket stauts:',statusText);
+//     	callback(socket);
+//     });
+// }
+// socket.on('connect', function () {
+// 	socket.emit('join', userName);
+// });
+
+
+
+
+</script>
+</body>
+</html>
