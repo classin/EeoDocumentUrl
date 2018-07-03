@@ -30,7 +30,7 @@ edu 格式内容为一个 json，样例如下，key 不能改，值可以根据�
 - 如果 identity 字段为 true，表示 classin 打开 url 时后面会加上 identity=<登录者的角色>，该值是一个字符串，取值范围是 teacher, assistant, student, auditor。
 - 如果包含 title 字段，则课件标题栏会显示此字符串，数据使用 utf-8 编码
 - 如果 classin_authority 字段为 true，表示会使用 classin 的课件授权规则（即由老师在课堂中控制学生的授权状态），否则网页内容一直是可操作的状态。auditor 角色永远没有权限
-- 如果包含 size 字段，则以此为打开时窗口的推荐大小及窗口最小限制，默认为"600x400,300x200"，宽高比需保持一致
+- 如果包含 size 字段，值为两组宽高，第一组是打开时窗口的推荐大小，第二组是窗口的最小限制，默认为"600x400,300x200"
 
 添加参数后的完整 url 示例：
 ```http://11.33.55.77:9999/index_exam.html?schoolId=111111&courseId=222222&classId=3333333&uid=666666&nickname=call me student&identity=teacher```
