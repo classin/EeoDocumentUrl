@@ -173,7 +173,7 @@ var vueApp=new Vue({
 		if(this.userName.length>8){
 			this.userName=this.userName.substr(0,8)+'...'
 		}
-		if(routeQuery.identity==='teacher'){
+		if(routeQuery.identity==='teacher' || routeQuery.identity==='assistant'){
 			this.userRole='1';
 		}else{
 			this.userRole='2';
