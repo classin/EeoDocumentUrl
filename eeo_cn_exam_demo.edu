@@ -1,0 +1,9 @@
+{
+    "url":"http://edudemo.eeo.im/index.html",
+    "uid":true,
+    "nickname":true,
+    "identity":true,
+    "title":"exam",
+    "size":"800x500,400x300",
+    "classin_authority":false
+}
