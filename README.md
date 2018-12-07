@@ -20,6 +20,7 @@ edu 格式内容为一个 json，样例如下，key 不能改，值可以根据�
 - 学校ID，schoolId=<64位无符号整数>
 - 课程ID，courseId=<64位无符号整数>
 - 课节ID，classId=<64位无符号整数>
+- 客户端语言，lang=<字符串>，目前的取值范围是 en, zh-CN, zh-TW
 
 ##### edu 文件必填项：
 - url 需要打开的网址
@@ -33,9 +34,9 @@ edu 格式内容为一个 json，样例如下，key 不能改，值可以根据�
 - 如果包含 size 字段，值为两组宽高，第一组是打开时窗口的推荐大小，第二组是窗口的最小限制，默认为"600x400,300x200"
 
 添加参数后的完整 url 示例：
-```http://11.33.55.77:9999/index_exam.html?schoolId=111111&courseId=222222&classId=3333333&uid=666666&nickname=call me student&identity=teacher```
+```http://11.33.55.77:9999/index_exam.html?schoolId=111111&courseId=222222&classId=3333333&uid=666666&nickname=call me student&identity=teacher&lang=zh-CN```
 
-ClassIn 中的 edu 文件示例见 ```demo/subject.edu```
+ClassIn 中的 edu 文件示例见 ```eeo_cn_exam_demo.edu```
 
 在线答题demo (socket.io)
 ===============
@@ -58,11 +59,11 @@ Install
     基本格式：courseId=[课程id]&classId=[课节id]&uid=[用户id]&nickname=[用户昵称encodeURIComponent]&identity=[用户身份]。
 
 7. 场景模拟
-    老师登陆：```http://demo_host:3000/index.html?courseId=1000&classId=2000001&uid=300001&nickname=%E7%8E%8B%E8%80%81%E5%B8%88&identity=teacher```
+    老师登陆：```http://demo_host:3000/index.html?courseId=1000&classId=2000001&uid=300001&nickname=%E7%8E%8B%E8%80%81%E5%B8%88&identity=teacher&lang=zh-CN```
 
-    学生A登陆：```http://demo_host:3000/index.html?courseId=1000&classId=2000001&uid=300002&nickname=%E5%AD%A6%E7%94%9FA&identity=student```
+    学生A登陆：```http://demo_host:3000/index.html?courseId=1000&classId=2000001&uid=300002&nickname=%E5%AD%A6%E7%94%9FA&identity=student&lang=zh-CN```
 
-    学生B登陆：```http://demo_host:3000/index.html?courseId=1000&classId=2000001&uid=300003&nickname=%E5%AD%A6%E7%94%9FB&identity=student```
+    学生B登陆：```http://demo_host:3000/index.html?courseId=1000&classId=2000001&uid=300003&nickname=%E5%AD%A6%E7%94%9FB&identity=student&lang=zh-CN```
 
 ClassIn 使用的浏览器
 =============
@@ -73,7 +74,7 @@ ClassIn 使用的浏览器
 目录结构
 ============
 ```
-Demo                        答题 demo
+demo/                       答题 demo
 example.edu                 答题 demo对应的 edu 文件（使用时需要将 url 里的 IP 改成开发者的服务器的 IP 或域名）
 eeo_cn_exam_demo.edu        答题 demo对应的 edu 文件（可以直接上传到 ClassIn 里演示）
 browser/                    用于调 html5 代码兼容性
