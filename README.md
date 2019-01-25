@@ -5,9 +5,9 @@ API
 #### edu 文件格式说明
 edu 格式内容为一个 json，样例如下，key 不能改，值可以根据需求调整，数据大小写敏感，使用无 BOM 的 UTF-8 编码：
 
-```
+```JSON
 {
-    "url":"http://cn.bing.com?p=v",
+    "url":"http://www2.bing.com?p=v",
     "uid":true,
     "nickname":true,
     "identity":true,
@@ -39,8 +39,9 @@ edu 格式内容为一个 json，样例如下，key 不能改，值可以根据�
 ClassIn 中的 edu 文件示例见 ```eeo_cn_exam_demo.edu```
 
 ##### 注意事项
-- PC 端在使用简体中文时传给网页的语言参数有误，老版本传的是 zh，后续更新的版本会修改为本文档里约定的 zh-CN，移动端无此问题。期间机构的开发者处理多语言的时候可能需要兼容这两个值，伪代码如下：
-```
+PC 端在使用简体中文时传给网页的语言参数有误，老版本传的是 zh，后续更新的版本会修改为本文档里约定的 zh-CN，移动端无此问题。期间机构的开发者处理多语言的时候可能需要兼容这两个值，伪代码如下：
+
+```javascript
 if (lang == "zh" || lang == "zh-CN") { // 需要判断两个值
     // 显示简体中文界面
 } else if (lang == "zh-TW") {
