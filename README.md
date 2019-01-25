@@ -20,7 +20,7 @@ edu 格式内容为一个 json，样例如下，key 不能改，值可以根据�
 - 学校ID，schoolId=<64位无符号整数>
 - 课程ID，courseId=<64位无符号整数>
 - 课节ID，classId=<64位无符号整数>
-- 客户端语言，lang=<字符串>，目前的取值范围是 en, zh-CN, zh-TW
+- 客户端语言，lang=<字符串>，目前的取值范围是 en(英语), zh-CN(简体中文), zh-TW(繁体中文), es(西班牙语,ClassIn2.2.7.68引入)
 
 ##### edu 文件必填项：
 - url 需要打开的网址
@@ -37,6 +37,20 @@ edu 格式内容为一个 json，样例如下，key 不能改，值可以根据�
 ```http://11.33.55.77:9999/index_exam.html?schoolId=111111&courseId=222222&classId=3333333&uid=666666&nickname=call me student&identity=teacher&lang=zh-CN```
 
 ClassIn 中的 edu 文件示例见 ```eeo_cn_exam_demo.edu```
+
+##### 注意事项
+- PC 端在使用简体中文时传给网页的语言参数有误，老版本传的是 zh，后续更新的版本会修改为本文档里约定的 zh-CN，移动端无此问题。期间机构的开发者处理多语言的时候可能需要兼容这两个值，伪代码如下：
+```
+if (lang == "zh" || lang == "zh-CN") { // 需要判断两个值
+    // 显示简体中文界面
+} else if (lang == "zh-TW") {
+    // 显示繁体中文界面
+} else if (lang == "es") {
+    // 显示西班牙语界面
+} else {
+    // 显示英文界面
+}
+```
 
 在线答题demo (socket.io)
 ===============
