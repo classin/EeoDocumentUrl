@@ -1,13 +1,13 @@
 API
 ==================
 #### 实现的功能：
-从云盘打开 edu 格式的文件，classin 能打开该文件指定的页面，该类课件内容的同步由第三方自行处理，classin只负责窗口位置、前后关系及全屏状态的同步。
+从云盘打开 edu 格式的文件，classin 能打开该文件指定的页面，该类课件内容的同步由第三方自行处理，classin只负责窗口信息（位置、前后关系及全屏状态）的同步。
 #### edu 文件格式说明
 edu 格式内容为一个 json，样例如下，key 不能改，值可以根据需求调整，数据大小写敏感，使用无 BOM 的 UTF-8 编码：
 
 ```JSON
 {
-    "url":"http://www2.bing.com?p=v",
+    "url":"http://www2.bing.com?key=value#anchorHash",
     "uid":true,
     "nickname":true,
     "identity":true,
@@ -17,22 +17,22 @@ edu 格式内容为一个 json，样例如下，key 不能改，值可以根据�
 }
 ```
 ##### ClassIn 会默认传入以下参数：
-- 学校ID，schoolId=<64位无符号整数>
-- 课程ID，courseId=<64位无符号整数>
-- 课节ID，classId=<64位无符号整数>
-- 客户端类型，deviceType=<字符串>，目前的取值范围是 pc, android, iPhone, iPad
-- 客户端语言，lang=<字符串>，目前的取值范围是 en(英语), zh-CN(简体中文), zh-TW(繁体中文), es(西班牙语,ClassIn2.2.7.68引入)
+- 学校ID，`schoolId=<64位无符号整数>`
+- 课程ID，`courseId=<64位无符号整数>`
+- 课节ID，`classId=<64位无符号整数>`
+- 客户端类型，`deviceType=<字符串>`，目前的取值范围是 `pc`, `android`, `iPhone`, `iPad`
+- 客户端语言，`lang=<字符串>`，目前的取值范围是 `en`(英语), `zh-CN`(简体中文), `zh-TW`(繁体中文), `es`(西班牙语,ClassIn2.2.7.68引入)
 
 ##### edu 文件必填项：
-- url 需要打开的网址
+- `url` 需要打开的网址
 
 ##### edu 文件选填项：
-- 如果 uid 字段为 true，表示 classin 打开 url 时后面会加上 uid=<登录者的uid>
-- 如果 nickname 字段为 true，表示 classin 打开 url 时后面会加上 nickname=<登录者的nickname>
-- 如果 identity 字段为 true，表示 classin 打开 url 时后面会加上 identity=<登录者的角色>，该值是一个字符串，取值范围是 teacher, assistant, student, auditor。
-- 如果包含 title 字段，则课件标题栏会显示此字符串，数据使用 utf-8 编码
-- 如果 classin_authority 字段为 true，表示会使用 classin 的课件授权规则（即由老师在课堂中控制学生的授权状态），否则网页内容一直是可操作的状态。auditor 角色永远没有权限
-- 如果包含 size 字段，值为两组宽高，第一组是打开时窗口的推荐大小，第二组是窗口的最小限制，默认为"600x400,300x200"
+- 如果 `uid` 字段为 `true`，表示 classin 打开 url 时后面会加上 `uid=<登录者的uid>`
+- 如果 `nickname` 字段为 `true`，表示 classin 打开 url 时后面会加上 `nickname=<登录者的nickname>`
+- 如果 `identity` 字段为 `true`，表示 classin 打开 url 时后面会加上 `identity=<登录者的角色>`，该值是一个字符串，取值范围是 `teacher`, `assistant`, `student`, `auditor`。
+- 如果包含 `title` 字段，则课件标题栏会显示此字符串，数据使用 utf-8 编码
+- 如果 `classin_authority` 字段为 `true`，表示会使用 classin 的课件授权规则（即由老师在课堂中控制学生的授权状态），否则网页内容一直是可操作的状态。auditor 角色永远没有权限
+- 如果包含 `size` 字段，值为两组宽高，第一组是打开时窗口的推荐大小，第二组是窗口的最小限制，默认为`"600x400,300x200"`
 
 添加参数后的完整 url 示例：
 ```http://11.33.55.77:9999/index_exam.html?schoolId=111111&courseId=222222&classId=3333333&uid=666666&nickname=call me student&identity=teacher&deviceType=pc&lang=zh-CN```
@@ -40,8 +40,7 @@ edu 格式内容为一个 json，样例如下，key 不能改，值可以根据�
 ClassIn 中的 edu 文件示例见 ```eeo_cn_exam_demo.edu```
 
 ##### 注意事项
-PC 端在使用简体中文时传给网页的语言参数有误，老版本传的是 zh，后续更新的版本会修改为本文档里约定的 zh-CN，移动端无此问题。期间机构的开发者处理多语言的时候可能需要兼容这两个值，伪代码如下：
-
+1. PC 端在使用简体中文时传给网页的语言参数有误，老版本传的是 `zh`，后续更新的版本会修改为本文档里约定的 zh-CN，移动端无此问题。期间机构的开发者处理多语言的时候可能需要兼容这两个值，伪代码如下：
 ```javascript
 if (lang == "zh" || lang == "zh-CN") { // 需要判断两个值
     // 显示简体中文界面
@@ -53,6 +52,7 @@ if (lang == "zh" || lang == "zh-CN") { // 需要判断两个值
     // 显示英文界面
 }
 ```
+2. 开发时请注意不要在发布环境中弹独立的窗口（如alert），否则接收端可能会闪退。保留 alert 弹窗仅作为开发阶段调试使用。如果需要弹窗的话，发布环境中应该在 classin 的 edu 课件框内显示提示框。
 
 在线答题demo (socket.io)
 ===============
@@ -83,7 +83,7 @@ Install
 
 ClassIn 使用的浏览器
 =============
-- PC 版: Qt5.5.1 对应的 QtWebkit，可用该文档附带的 browser 目录里的 fancybrowser 测试（**注意：*PC 版浏览器*不支持 Flash，不支持 es6 语法，内核基于webkit 内核。**）
+- PC 版: Qt5.5.1 对应的 QtWebkit，可用该文档附带的 browser 目录里的 fancybrowser 测试（**注意：*PC 版浏览器*不支持 Flash，不支持 es6 语法，内核基于webkit 。**）
 - iOS 版: 手机/Pad 系统自带的 safari
 - Android 版：手机/Pad 系统自带的浏览器
 
