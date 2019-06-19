@@ -17,22 +17,27 @@ edu 格式内容为一个 json，样例如下，key 不能改，值可以根据�
 }
 ```
 ##### ClassIn 会默认传入以下参数：
-- 学校ID，`schoolId=<64位无符号整数>`
-- 课程ID，`courseId=<64位无符号整数>`
-- 课节ID，`classId=<64位无符号整数>`
-- 客户端类型，`deviceType=<字符串>`，目前的取值范围是 `pc`, `android`, `iPhone`, `iPad`
-- 客户端语言，`lang=<字符串>`，目前的取值范围是 `en`(英语), `zh-CN`(简体中文), `zh-TW`(繁体中文), `es`(西班牙语,ClassIn2.2.7.68引入)
+| 字段         	| 类型           	| 描述                                                                                	|
+|--------------	|----------------	|-------------------------------------------------------------------------------------	|
+| `schoolId`   	| 64位无符号整数 	| 学校唯一标识号                                                                      	|
+| `courseId`   	| 64位无符号整数 	| 课程唯一标识号                                                                      	|
+| `classId`    	| 64位无符号整数 	| 课节唯一标识号                                                                      	|
+| `deviceType` 	| 字符串         	| 客户端类型，取值范围是`pc`,`android`,`iPhone`,`iPad`                                	|
+| `lang`       	| 字符串         	| 客户端语言，取值范围是`en`(英语),`zh-CN`(简体中文),`zh-TW`(繁体中文),`es`(西班牙语) 	|
+
 
 ##### edu 文件必填项：
-- `url` 需要打开的网址
+- `url` 需要打开的网址，例如`http://www.example.io/faq.html?key=value#question13`，classin 会将传入的参数拼接到`?key=value`之后，如`http://www.example.io/faq.html?key=value&schoolId=111&courseId=222...#question13`
 
 ##### edu 文件选填项：
-- 如果 `uid` 字段为 `true`，表示 classin 打开 url 时后面会加上 `uid=<登录者的uid>`
-- 如果 `nickname` 字段为 `true`，表示 classin 打开 url 时后面会加上 `nickname=<登录者的nickname>`
-- 如果 `identity` 字段为 `true`，表示 classin 打开 url 时后面会加上 `identity=<登录者的角色>`，该值是一个字符串，取值范围是 `teacher`, `assistant`, `student`, `auditor`。
-- 如果包含 `title` 字段，则课件标题栏会显示此字符串，数据使用 utf-8 编码
-- 如果 `classin_authority` 字段为 `true`，表示会使用 classin 的课件授权规则（即由老师在课堂中控制学生的授权状态），否则网页内容一直是可操作的状态。auditor 角色永远没有权限
-- 如果包含 `size` 字段，值为两组宽高，第一组是打开时窗口的推荐大小，第二组是窗口的最小限制，默认为`"600x400,300x200"`
+| 字段              	| 类型   	| 取值／`默认值`      	| 描述                                                                                                                                                                                                	|
+|-------------------	|--------	|---------------------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| `uid`               	| bool   	| `true`, false       	| `true`表示 classin 打开 url 时将拼接`uid=<登录者的uid>`                                                                                                                                                 	|
+| `nickname`          	| bool   	| `true`, false       	| `true`表示 classin 打开 url 时将拼接`nickname=<登录者的nickname>`                                                                                                                                       	|
+| `identity`          	| bool   	| `true`, false       	| `true`表示 classin 打开 url 时将拼接`identity=<登录者的角色>`<BR> 角色范围是`teacher`, `assistant`, `student`, `auditor`                                                                                	|
+| `title`             	| string 	|                     	| 课件标题栏会显示此字符串                                                                                                                                                                            	|
+| `classin_authority` 	| bool   	| `true`, false       	| `true`表示使用 classin 的课件授权规则（即由老师在课堂中控制学生的授权状态），`false` 表示网页内容一直是可操作的状态。<BR> **注意：auditor 角色永远没有权限**                                            	|
+| `size`              	| string 	| `"600x400,300x200"` 	| 值为两组宽高，第一组是打开时窗口的推荐大小，第二组是窗口的最小限制。<BR> **注意：两组大小均不能小于 100x0，且推荐大小不能小于最小限制。宽高之间使用小写字母x分隔，两组宽高之间使用半角逗号`,`分隔** 	|
 
 添加参数后的完整 url 示例：
 ```http://11.33.55.77:9999/index_exam.html?schoolId=111111&courseId=222222&classId=3333333&uid=666666&nickname=call me student&identity=teacher&deviceType=pc&lang=zh-CN```
