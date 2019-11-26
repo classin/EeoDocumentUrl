@@ -95,10 +95,13 @@ ClassIn 使用的浏览器
 目录结构
 ============
 ```
-demo/                       答题 demo
-example.edu                 答题 demo对应的 edu 文件（使用时需要将 url 里的 IP 改成开发者的服务器的 IP 或域名）
-eeo_cn_exam_demo.edu        答题 demo对应的 edu 文件（可以直接上传到 ClassIn 里演示）
-browser/                    用于调 html5 代码兼容性
-browser/fancybrowser.dmg    PC Mac版浏览器
-browser/fancybrowser.zip    PC windows 版浏览器，解压后运行 fancybrowser.exe 即可
+|-- browser                  用于调 html5 代码兼容性
+|     |- fancybrowser.dmg    PC Mac版浏览器
+|     `- fancybrowser.zip    PC windows 版浏览器，解压后运行 fancybrowser.exe 即可
+|-- demo                     答题 demo
+|     |- ...
+|     |- ...
+|     `- ...
+|-- eeo_cn_exam_demo.edu     答题 demo对应的 edu 文件（可以直接上传到 ClassIn 里演示）
+`-- example.edu              答题 demo对应的 edu 文件（使用时需要将 url 里的 IP 改成开发者的服务器的 IP 或域名）
 ```

@@ -100,10 +100,13 @@ Browser used in ClassIn
 Directory Structure
 ============
 ```
-demo/                       online answer demo
-example.edu                 the edu file of the demo (change ip in the url to developers's server ip)
-eeo_cn_exam_demo.edu        The edu file corresponding to the demo (can be uploaded directly to ClassIn)
-browser/                    for tweaking html5 code compatibility
-browser/fancybrowser.dmg    PC Mac browser
-browser/fancybrowser.zip    PC windows browser, unzip and run fancybrowser.exe
+|-- browser                  for tweaking html5 code compatibility
+|     |- fancybrowser.dmg    PC Mac browser
+|     `- fancybrowser.zip    PC windows browser, unzip and run fancybrowser.exe
+|-- demo                     online answer demo
+|     |- ...
+|     |- ...
+|     `- ...
+|-- eeo_cn_exam_demo.edu     the edu file corresponding to the demo (can be uploaded directly to ClassIn)
+`-- example.edu              the edu file of the demo (change ip in the url to developers's server ip)
 ```
