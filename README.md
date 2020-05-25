@@ -17,13 +17,14 @@ edu 格式内容为一个 json，样例如下，key 不能改，值可以根据�
 }
 ```
 ##### ClassIn 会默认传入以下参数：
-| 字段         	| 类型           	| 描述                                                                                	|
-|--------------	|----------------	|-------------------------------------------------------------------------------------	|
-| `schoolId`   	| 64位无符号整数 	| 学校唯一标识号                                                                      	|
-| `courseId`   	| 64位无符号整数 	| 课程唯一标识号                                                                      	|
-| `classId`    	| 64位无符号整数 	| 课节唯一标识号                                                                      	|
-| `deviceType` 	| 字符串         	| 客户端类型，取值范围是`pc`,`android`,`iPhone`,`iPad`                                	|
-| `lang`       	| 字符串         	| 客户端语言，取值范围是`en`(英语),`zh-CN`(简体中文),`zh-TW`(繁体中文),`es`(西班牙语) 	|
+| 字段           | 类型           | 描述                                                                                |
+|----------------|----------------|-------------------------------------------------------------------------------------|
+| `schoolId`     | 64位无符号整数 | 学校唯一标识号                                                                      |
+| `courseId`     | 64位无符号整数 | 课程唯一标识号                                                                      |
+| `classId`      | 64位无符号整数 | 课节唯一标识号                                                                      |
+| `initiatorUid` | 64位无符号整数 | 打开该 edu 的用户                                                                   |
+| `deviceType`   | 字符串         | 客户端类型，取值范围是`pc`,`android`,`iPhone`,`iPad`                                |
+| `lang`         | 字符串         | 客户端语言，取值范围是`en`(英语),`zh-CN`(简体中文),`zh-TW`(繁体中文),`es`(西班牙语) |
 
 
 ##### edu 文件必填项：
@@ -40,7 +41,7 @@ edu 格式内容为一个 json，样例如下，key 不能改，值可以根据�
 | `size`              	| string 	| `"600x400,300x200"` 	| 值为两组宽高，第一组是打开时窗口的推荐大小，第二组是窗口的最小限制。<BR> **注意：两组大小均不能小于 100x0，且推荐大小不能小于最小限制。宽高之间使用小写字母x分隔，两组宽高之间使用半角逗号`,`分隔** 	|
 
 添加参数后的完整 url 示例：
-```http://11.33.55.77:9999/index_exam.html?schoolId=111111&courseId=222222&classId=3333333&uid=666666&nickname=call me student&identity=teacher&deviceType=pc&lang=zh-CN```
+```http://11.33.55.77:9999/index_exam.html?schoolId=111111&courseId=222222&classId=3333333&uid=666666&nickname=call%20me%20student&identity=teacher&initiatorUid=666666&deviceType=pc&lang=zh-CN```
 
 ClassIn 中的 edu 文件示例见 ```eeo_cn_exam_demo.edu```
 
@@ -96,8 +97,8 @@ ClassIn 使用的浏览器
 ============
 ```
 |-- browser                  用于调 html5 代码兼容性
-|     |- fancybrowser.dmg    PC Mac版浏览器
-|     `- fancybrowser.zip    PC windows 版浏览器，解压后运行 fancybrowser.exe 即可
+|     |- fancybrowser.dmg    Mac版浏览器
+|     `- fancybrowser.zip    Windows 版浏览器，解压后运行 fancybrowser.exe 即可
 |-- demo                     答题 demo
 |     |- ...
 |     |- ...

@@ -21,29 +21,30 @@ The content of the edu format is a json. An example is presented below, the key 
 ```
 
 ##### ClassIn will pass the following parameters by default:
-| Field        	| Type           	| Description                                                                                                                	|
-|--------------	|----------------	|----------------------------------------------------------------------------------------------------------------------------	|
-| `schoolId`   	| unsigned int64 	| school identifier                                                                                                          	|
-| `courseId`   	| unsigned int64 	| course identifier                                                                                                          	|
-| `classId`    	| unsigned int64 	| class identifier                                                                                                           	|
-| `deviceType` 	| string         	| device type, possible values are `pc`,`android`,`iPhone`,`iPad`                                                             	|
-| `lang`       	| string         	| client language, possible values are `en`(English), `zh-CN`(Simplified Chinese), `zh-TW`(Traditional Chinese), `es`(Spanish) 	|
+| Field          | Type           | Description                                                                                                                  |
+|----------------|----------------|------------------------------------------------------------------------------------------------------------------------------|
+| `schoolId`     | unsigned int64 | school identifier                                                                                                            |
+| `courseId`     | unsigned int64 | course identifier                                                                                                            |
+| `classId`      | unsigned int64 | class identifier                                                                                                             |
+| `initiatorUid` | unsigned int64 | uid of the one who opened this edu courseware                                                                                |
+| `deviceType`   | string         | device type, possible values are `pc`,`android`,`iPhone`,`iPad`                                                              |
+| `lang`         | string         | client language, possible values are `en`(English), `zh-CN`(Simplified Chinese), `zh-TW`(Traditional Chinese), `es`(Spanish) |
 
 ##### Required fields in edu file:
 - `url` url to open, say `http://www.example.io/faq.html?key=value#question13`, classin will pass parameters after `?key=value`, that is `http://www.example.io/faq.html?key=value&schoolId=111&courseId=222...#question13`
 
 ##### Optional fields in edu file:
-| Field             	| Type   	| values/`default`   	| Description                                                                                                                                                                                         	|
-|-------------------	|--------	|---------------------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
-| `uid`               	| bool   	| `true`, false       	| `true` means pass the following part to url`uid=<user's uid>`                                                                                                                                                 	|
-| `nickname`          	| bool   	| `true`, false       	| `true` means pass the following part to url`nickname=<user's nickname>`                                                                                                                                       	|
-| `identity`          	| bool   	| `true`, false       	| `true` means pass the following part to url`identity=<user's role>`<BR> possible values are`teacher`, `assistant`, `student`, `auditor`                                                                                	|
-| `title`             	| string 	|                     	| the data will be presented in courseware title bar                                                                                                                                                   	|
-| `classin_authority` 	| bool   	| `true`, false       	| `true` means the authorization rule of ClassIn will be used (i.e. the teacher could control the authorization status of students in the classroom), or the web content will be in the operational state. <BR> **NOTE: Auditor role never has the permission.**                                            	|
-| `size`              	| string 	| `"600x400,300x200"` 	| need two groups of width and height, the first group is the recommended size of open widget, while second group is a minimum limit.<BR> **NOTE: size cannot smaller than 100x0, and recommended size cannot smaller than minimum limit. Separator of width and height is lowercase letter x, and separator of groups is half-width comma `,`** 	|
+| Field               | Type   | values/`default`    | Description                                                                                                                                                                                                                                                                                                                                    |
+|---------------------|--------|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `uid`               | bool   | `true`, false       | `true` means pass the following part to url`uid=<user's uid>`                                                                                                                                                                                                                                                                                  |
+| `nickname`          | bool   | `true`, false       | `true` means pass the following part to url`nickname=<user's nickname>`                                                                                                                                                                                                                                                                        |
+| `identity`          | bool   | `true`, false       | `true` means pass the following part to url`identity=<user's role>`<BR> possible values are`teacher`, `assistant`, `student`, `auditor`                                                                                                                                                                                                        |
+| `title`             | string |                     | the data will be presented in courseware title bar                                                                                                                                                                                                                                                                                             |
+| `classin_authority` | bool   | `true`, false       | `true` means the authorization rule of ClassIn will be used (i.e. the teacher could control the authorization status of students in the classroom), or the web content will be in the operational state. <BR> **NOTE: Auditor role never has the permission.**                                                                                 |
+| `size`              | string | `"600x400,300x200"` | need two groups of width and height, the first group is the recommended size of open widget, while second group is a minimum limit.<BR> **NOTE: size cannot smaller than 100x0, and recommended size cannot smaller than minimum limit. Separator of width and height is lowercase letter x, and separator of groups is half-width comma `,`** |
 
 Example of a full url after adding parameters:
-`http://11.33.55.77:9999/index_exam.html?schoolId=111111&courseId=222222&classId=3333333&uid=666666&nickname=call me student&identity=teacher&deviceType=pc&lang=zh-CN`
+```http://11.33.55.77:9999/index_exam.html?schoolId=111111&courseId=222222&classId=3333333&uid=666666&nickname=call%20me%20student&identity=teacher&initiatorUid=666666&deviceType=pc&lang=zh-CN```
 
 See the example of the edu file in ClassIn. `eeo_cn_exam_demo.edu`
 
@@ -101,8 +102,8 @@ Directory Structure
 ============
 ```
 |-- browser                  for tweaking html5 code compatibility
-|     |- fancybrowser.dmg    PC Mac browser
-|     `- fancybrowser.zip    PC windows browser, unzip and run fancybrowser.exe
+|     |- fancybrowser.dmg    Mac browser
+|     `- fancybrowser.zip    windows browser, unzip and run fancybrowser.exe
 |-- demo                     online answer demo
 |     |- ...
 |     |- ...
