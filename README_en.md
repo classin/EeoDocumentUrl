@@ -15,7 +15,7 @@ The content of the edu format is a json. An example is presented below, the key 
     "nickname":true,
     "identity":true,
     "title":"CET4 test",
-    "size":"800x600,400x300",
+    "size":"600x400,300x200",
     "ClassIn_authority":true
 }
 ```
@@ -49,21 +49,7 @@ Example of a full url after adding parameters:
 See the example of the edu file in ClassIn. `eeo_cn_exam_demo.edu`
 
 ##### Warnings
-1. The language parameter passed to the web page by the PC client in Simplified Chinese is incorrect. The old version passed `zh`,and the updated version will be modified as specified in this document `zh-CN`. Mobile version of ClassIn does not have this problem. When third-party developers handle multiple languages, it may be necessary to be compatible with these two values. The pseudo code is as follows:
-
-```javascript
-if (lang == "zh" || lang == "zh-CN") { // need to check two values
-    // display Simplified Chinese interface
-} else if (lang == "zh-TW") {
-    // display Traditional Chinese interface
-} else if (lang == "es") {
-    // display Spanish interface
-} else {
-    // display English interface
-}
-```
-
-2. Please be careful not to pop up a separate window (such as `alert` in `javascript`) in the none debug environment during development, or the receiving side may crash. We keep the alert popup function only for debugging under development. If you need to pop up a window, you should develop a window which can be displayed inside web page.
+1. Please be careful not to pop up a separate window (such as `alert` in `javascript`) in the none debug environment during development, or the receiving side may crash. We keep the alert popup function only for debugging under development. If you need to pop up a window, you should develop a window which can be displayed inside web page.
 
 Online test demo (socket.io)
 ===============
