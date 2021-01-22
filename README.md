@@ -84,9 +84,6 @@ ClassIn 使用的浏览器
 目录结构
 ============
 ```
-|-- browser                  用于调 html5 代码兼容性
-|     |- fancybrowser.dmg    Mac版浏览器
-|     `- fancybrowser.zip    Windows 版浏览器，解压后运行 fancybrowser.exe 即可
 |-- demo                     答题 demo
 |     |- ...
 |     |- ...

@@ -87,9 +87,6 @@ Browser used in ClassIn
 Directory Structure
 ============
 ```
-|-- browser                  for tweaking html5 code compatibility
-|     |- fancybrowser.dmg    Mac browser
-|     `- fancybrowser.zip    windows browser, unzip and run fancybrowser.exe
 |-- demo                     online answer demo
 |     |- ...
 |     |- ...
