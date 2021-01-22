@@ -80,7 +80,7 @@ Install
 
 Browser used in ClassIn
 =============
-- PC version: QtWebkit corresponding to Qt5.5.1, developers can test by using browser/fancybrowser attached to this document (**Note: *PC version browser* does not support Flash, does not support es6 version js, the kernal is based on webkit.**)
+- PC version: Chromium Embedded Framework (84.4.0+g304e015+chromium-84.0.4147.105), developers can test by using [this tool](https://github.com/classin/EeoDocumentUrl/releases/tag/4.0)
 - iOS version: Safari comes with the phone/Pad system
 - Android version: The browser that comes with the phone/Pad system
 

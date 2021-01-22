@@ -77,7 +77,7 @@ Install
 
 ClassIn 使用的浏览器
 =============
-- PC 版: Qt5.5.1 对应的 QtWebkit，可用该文档附带的 browser 目录里的 fancybrowser 测试（**注意：*PC 版浏览器*不支持 Flash，不支持 es6 语法，内核基于webkit 。**）
+- PC 版: Chromium Embedded Framework (84.4.0+g304e015+chromium-84.0.4147.105)，可使用[这里的浏览器工具](https://github.com/classin/EeoDocumentUrl/releases/tag/4.0)进行调试
 - iOS 版: 手机/Pad 系统自带的 safari
 - Android 版：手机/Pad 系统自带的浏览器
 
