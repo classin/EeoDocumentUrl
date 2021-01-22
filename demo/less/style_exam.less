@@ -1,0 +1,141 @@
+body{
+	font-family: "微软雅黑";
+}
+div{
+    box-sizing: border-box;
+}
+.appWrapper{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    .examLoginBox{
+        position: absolute;
+        width: 250px;
+        left: 50%;
+        margin-left: -125px;
+        // text-align: center;
+        top: 30%;
+        //-webkit-transform: translateY(30%);
+        font-size: 14px;
+        line-height: 36px;
+        input,select{
+            border:1px solid #ccc;
+            border-radius: 4px;
+        }
+    }
+    .examRoom{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        @title_height:40px;
+        @onlineUsers_width:40%;
+        .examPapper{
+            .examTitle{
+                height: @title_height;
+                text-align: center;
+                line-height: @title_height;
+                border-bottom: 1px solid #ccc;
+            }
+            .examWrapper{
+                position: absolute;
+                left: 0;
+                top:@title_height;
+                right: @onlineUsers_width;
+                bottom: 0;
+                padding: 10px;
+                overflow: auto;
+            }
+            .questionBox{
+                .questionTitle{
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+                .questionOptions{
+                    padding: 10px;
+                    margin: 0;
+                    list-style: none;
+                    .option{
+                        padding-left: 40px;
+                        margin: 0;
+                        margin-bottom: 10px;
+                        line-height: 24px;
+                        .answerCheckedUsers{
+                            .userBox{
+                                &:first-child{
+                                    &:before{
+                                        content: "("
+                                    }
+                                }
+                                &:last-child{
+                                    &:after{
+                                        content: ")"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .membersBox{
+                position: absolute;
+                width: @onlineUsers_width;
+                right: 0;
+                top: @title_height;
+                bottom: 0;
+                border-left: 1px solid #ccc;
+                .memebrsList{
+                    list-style: none;
+                    padding: 10px;
+                    margin: 0;
+                    .memberBox{
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                        margin-bottom: 20px;
+                        .answersProgress{
+                            .answer{
+                                padding-left: 30px;
+    
+                            }
+                        }
+                    }
+                }
+            }
+            &.student{
+                &.examEnded{
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                    .questionBox{
+                        .questionOptions{
+                            .option{
+                                cursor: not-allowed;
+                            }
+                        }
+                    }
+                }
+                .questionBox{
+                    .questionOptions{
+                        .option{
+                            cursor: pointer;
+                            &:hover{
+                                background-color: #ccc;
+                            }
+                            &.checked{
+                                background-color: #aaa;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    .examPapper.student{
+
+    }
+}
