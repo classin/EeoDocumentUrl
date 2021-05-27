@@ -6,7 +6,7 @@ In order to open the third party web cousreware in ClassIn classroom, we provide
 When edu file (courseware) is open in classroom from cloud disk, ClassIn will read the edu content and open the web page specified by the file. The synchronization of the courseware content is handled by the third party's own developers. The ClassIn is only responsible for the synchronization of the courseware widget information (geometry, z-order and the full screen status).
 
 #### Edu file format description
-The content of the edu format is a json. An example is presented below, the key cannot be changed, the value can be adjusted according to requirements, the data is case-sensitive, and the UTF-8 encoding:
+The content of the edu format is a json. An example is presented below, the key cannot be changed, the value can be adjusted according to requirements, the data is case-sensitive, and the UTF-8 encoding. The developer needs to ensure the correctness of the json in the edu file, otherwise a conversion error will be reported after uploading. You can use the [online json validator website](https://cn.bing.com/search?q=json%20validator&ensearch=1) to check.
 
 ```JSON
 {
